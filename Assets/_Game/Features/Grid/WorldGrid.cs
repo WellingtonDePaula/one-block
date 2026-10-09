@@ -1,4 +1,5 @@
 using SoWell.Utils.Core;
+using System;
 using UnityEngine;
 
 namespace OneBlock.Features {
@@ -10,19 +11,23 @@ namespace OneBlock.Features {
         // Propriedades para acesso controlado externo
 
         // Campos privados para o estado interno da classe
-        private GenericGrid<GridCell> grid;
+        private GenericGrid<GridCell> _grid;
+
 
         #region Métodos do ciclo de vida da Unity (Awake, OnEnable, Start, OnDisable)
-        private void Awake() {
-            grid = new GenericGrid<GridCell>(10, 10, 1f, Vector3.zero, (GenericGrid<GridCell> g, int x, int y) => new GridCell(x, y));
-
-            grid.ForEach((x, y, g) => {
-                UtilsClass.CreateWorldText(g.GetConcatenatedLayerText(), localPosition: new Vector2(x * grid.CellSize, y * grid.CellSize), fontSize: 6);
-            });
-        }
         #endregion
 
         #region Métodos públicos e privados da lógica da classe
+        public void CreateGrid(GameObject blockPrefab) {
+            var width = 10;
+            var height = 10;
+
+            _grid = new GenericGrid<GridCell>(width, height, 1f, Vector3.zero, (GenericGrid<GridCell> g, int x, int y) => {
+                GameObject block = Instantiate(blockPrefab, this.transform);
+                block.transform.localPosition = new Vector3(x, y) * g.CellSize;
+                return new GridCell(block);
+            });
+        }
         #endregion
     }
 }

@@ -5,14 +5,13 @@ namespace OneBlock.Features {
         // Campos estáticos e constantes
 
         // Campos privados para o estado interno da classe
-        private string blockTextTest;
+        private BlockController _block;
 
         // Propriedades para acesso controlado externo
-        public string BlockTextTest => blockTextTest;
 
         // Construtores
-        public CellLayer(string text) {
-            blockTextTest = text;
+        public CellLayer(BlockController block) {
+            _block = block;
         }
 
         #region Métodos públicos e privados da lógica da classe
