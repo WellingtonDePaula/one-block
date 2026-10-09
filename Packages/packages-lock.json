@@ -1,5 +1,12 @@
 {
   "dependencies": {
+    "com.so-well-studios.utils": {
+      "version": "https://github.com/WellingtonDePaula/so-well-utils.git#upm",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {},
+      "hash": "9b57b1680d5972588f1aeab063c69f085b78ffa3"
+    },
     "com.unity.2d.animation": {
       "version": "13.0.4",
       "depth": 0,
