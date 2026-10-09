@@ -17,6 +17,7 @@ namespace OneBlock.Features {
         private Camera _camera;
         private Color _originalColor;
         private bool _isHovered;
+        private Vector2 _gridPos;
 
         #region Métodos do ciclo de vida da Unity
         private void Awake() {
@@ -51,6 +52,11 @@ namespace OneBlock.Features {
         #endregion
 
         #region Métodos públicos e privados da lógica da classe
+        public void Setup(int x, int y) {
+            _gridPos = new Vector2(x, y);
+
+            spriteRenderer.sortingOrder = -y;
+        }
         private void OnHoverEnter() {
             spriteRenderer.color = hoverColor;
         }

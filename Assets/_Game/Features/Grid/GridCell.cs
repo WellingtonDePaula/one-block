@@ -14,11 +14,10 @@ namespace OneBlock.Features {
         public GridCell() {
             _layers = new Stack<CellLayer>();
         }
-        public GridCell(GameObject block) {
+        public GridCell(BlockController block) {
             _layers = new Stack<CellLayer>();
 
-            BlockController controller = block.GetComponent<BlockController>();
-            _layers.Push(new CellLayer(controller));
+            _layers.Push(new CellLayer(block));
         }
 
         #region Métodos públicos e privados da lógica da classe

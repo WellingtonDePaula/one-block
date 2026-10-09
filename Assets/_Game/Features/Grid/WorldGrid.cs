@@ -23,8 +23,11 @@ namespace OneBlock.Features {
             var height = 10;
 
             _grid = new GenericGrid<GridCell>(width, height, 1f, Vector3.zero, (GenericGrid<GridCell> g, int x, int y) => {
-                GameObject block = Instantiate(blockPrefab, this.transform);
-                block.transform.localPosition = new Vector3(x, y) * g.CellSize;
+                GameObject blockObject = Instantiate(blockPrefab, this.transform);
+                blockObject.transform.localPosition = new Vector3(x, y) * g.CellSize;
+
+                var block = blockObject.GetComponent<BlockController>();
+                block.Setup(x, y);
                 return new GridCell(block);
             });
         }
