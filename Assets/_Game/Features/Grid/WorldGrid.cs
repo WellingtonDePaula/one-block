@@ -16,15 +16,12 @@ namespace OneBlock.Features {
         private int _height = 10;
         private float _cellSize = 1f;
         private GenericGrid<GridCell> _grid;
-        private Camera _camera;
+        private GridCell _hoverCell;
 
 
         #region Métodos do ciclo de vida da Unity (Awake, OnEnable, Start, OnDisable)
         private void Update() {
-            if (Mouse.current == null) { return; }
-
-            Vector2 worldPos = UtilsClass.GetMouseWorldPosition(_camera);
-
+            HandleHoverCell();
         }
         #endregion
 
@@ -38,6 +35,22 @@ namespace OneBlock.Features {
                 block.Setup(x, y);
                 return new GridCell(block);
             });
+        }
+        private void HandleHoverCell() {
+            if (Mouse.current == null) { return; }
+
+            Vector2 worldPos = UtilsClass.GetMouseWorldPosition();
+
+            if (_grid == null) { return; }
+
+            Vector2Int gridPos = _grid.GetGridPosition(worldPos);
+            var newCell = _grid.GetValue(gridPos.x, gridPos.y);
+
+            if (_hoverCell != newCell) {
+                _hoverCell?.SetHover(false);
+                _hoverCell = newCell;
+                _hoverCell?.SetHover(true);
+            }
         }
         #endregion
     }

@@ -26,6 +26,12 @@ namespace OneBlock.Features {
 
             spriteRenderer.sortingOrder = -y;
         }
+        public void HoverEnter() {
+            spriteRenderer.color = Color.yellow;
+        }
+        public void HoverExit() {
+            spriteRenderer.color = _originalColor;
+        }
         #endregion
     }
 }
