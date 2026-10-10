@@ -1,3 +1,4 @@
+using OneBlock.Features.Blocks;
 using SoWell.Utils.Core;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -7,8 +8,8 @@ namespace OneBlock.Features.Grid {
         // Campos estáticos e constantes
 
         // Campos expostos no Inspector
+        [SerializeField] private GridLinesController gridLinesController;
 
-        // Propriedades para acesso controlado externo
 
         // Campos privados para o estado interno da classe
         private int _width = 10;
@@ -37,6 +38,7 @@ namespace OneBlock.Features.Grid {
                 block.Setup(x, y);
                 return new GridCell(block);
             });
+            gridLinesController.Setup(_grid.OriginPosition, _grid.CellSize);
         }
         private void HandleHoverCell() {
             if (Mouse.current == null) { return; }
