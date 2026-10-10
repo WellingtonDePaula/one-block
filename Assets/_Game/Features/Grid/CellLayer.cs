@@ -8,6 +8,7 @@ namespace OneBlock.Features {
         private BlockController _block;
 
         // Propriedades para acesso controlado externo
+        public BlockController Block;
 
         // Construtores
         public CellLayer(BlockController block) {

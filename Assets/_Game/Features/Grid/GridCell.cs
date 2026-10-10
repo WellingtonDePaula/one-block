@@ -9,6 +9,7 @@ namespace OneBlock.Features {
         private Stack<CellLayer> _layers;
 
         // Propriedades para acesso controlado externo
+        public bool IsHovered { get; private set; } = false;
 
         // Construtores
         public GridCell() {
