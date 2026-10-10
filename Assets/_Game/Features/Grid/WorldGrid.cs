@@ -2,7 +2,7 @@ using SoWell.Utils.Core;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-namespace OneBlock.Features {
+namespace OneBlock.Features.Grid {
     public class WorldGrid : MonoBehaviour {
         // Campos estáticos e constantes
 

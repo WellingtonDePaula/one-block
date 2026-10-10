@@ -1,13 +1,10 @@
-using OneBlock.Features.Grid;
 using UnityEngine;
 
-namespace OneBlock.Core.Game {
-    public class GameManager : MonoBehaviour {
+namespace OneBlock.Features.Grid {
+    public class GridLinesController : MonoBehaviour {
         // Campos estáticos e constantes
 
         // Campos expostos no Inspector
-        [SerializeField] private WorldGrid worldGrid;
-        [SerializeField] private GameObject blockPrefab;
 
         // Propriedades para acesso controlado externo
 
@@ -17,9 +14,6 @@ namespace OneBlock.Core.Game {
         #endregion
 
         #region Métodos públicos e privados da lógica da classe
-        public void CreateGrid() {
-            worldGrid.CreateGrid(blockPrefab);
-        }
         #endregion
     }
 }

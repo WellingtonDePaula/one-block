@@ -1,4 +1,4 @@
-namespace OneBlock.Features {
+namespace OneBlock.Features.Grid {
     public class CellLayer {
         // Campos estáticos e constantes
 

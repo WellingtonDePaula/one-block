@@ -2,7 +2,7 @@ using SoWell.Utils.Core;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-namespace OneBlock.Features {
+namespace OneBlock.Features.Blocks {
     [RequireComponent(typeof(Collider2D))]
     public class BlockController : MonoBehaviour {
         // Campos expostos no Inspector

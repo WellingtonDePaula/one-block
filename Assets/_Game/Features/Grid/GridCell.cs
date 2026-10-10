@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace OneBlock.Features {
+namespace OneBlock.Features.Grid {
     public class GridCell {
         // Campos estáticos e constantes
 
