@@ -1,5 +1,3 @@
-using UnityEngine;
-
 namespace OneBlock.Features {
     public class CellLayer {
         // Campos estáticos e constantes
@@ -8,7 +6,7 @@ namespace OneBlock.Features {
         private BlockController _block;
 
         // Propriedades para acesso controlado externo
-        public BlockController Block;
+        public BlockController Block => _block;
 
         // Construtores
         public CellLayer(BlockController block) {
