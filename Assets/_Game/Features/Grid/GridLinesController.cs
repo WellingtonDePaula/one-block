@@ -18,17 +18,23 @@ namespace OneBlock.Features {
         // Campos privados para o estado interno da classe
         private Material _material;
         private bool _isReady;
+        private SpriteRenderer _spriteRenderer;
+        private float _cellSize;
 
         #region Métodos do ciclo de vida da Unity
         private void Awake() {
+            _spriteRenderer = GetComponent<SpriteRenderer>();
             // .material cria uma instância, então não altera o asset original
-            _material = GetComponent<SpriteRenderer>().material;
+            _material = _spriteRenderer.material;
         }
 
         private void Update() {
             if (!_isReady || Mouse.current == null) { return; }
 
             Vector2 mouseWorld = UtilsClass.GetMouseWorldPosition();
+
+            _spriteRenderer.sortingOrder = Mathf.FloorToInt(mouseWorld.y / _cellSize) + (Mathf.FloorToInt(fadeCells)*2);
+
             _material.SetVector(MouseWorldId, mouseWorld);
         }
 
@@ -43,6 +49,7 @@ namespace OneBlock.Features {
         /// Envia os dados que não mudam por frame. Chame depois de criar o grid.
         /// </summary>
         public void Setup(Vector3 origin, float cellSize) {
+            _cellSize = cellSize;
             _material.SetVector(GridOriginId, (Vector2)origin);
             _material.SetFloat(CellSizeId, cellSize);
             _material.SetFloat(FadeRadiusId, fadeCells * cellSize);
