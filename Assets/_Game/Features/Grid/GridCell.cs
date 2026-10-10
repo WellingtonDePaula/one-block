@@ -1,6 +1,7 @@
 using OneBlock.Features.Blocks;
 using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace OneBlock.Features.Grid {
     public class GridCell {
@@ -18,17 +19,18 @@ namespace OneBlock.Features.Grid {
         public GridCell() {
             _layers = new Stack<CellLayer>();
         }
-        public GridCell(BlockController block) {
-            _layers = new Stack<CellLayer>();
 
+        #region Métodos públicos e privados da lógica da classe
+        public void AddLayer(Transform parent, GameObject blockPrefab, int x, int y, float cellSize) {
+            GameObject blockObject = GameObject.Instantiate(blockPrefab, parent);
+            blockObject.transform.localPosition = new Vector3(x, y) * cellSize;
 
-            _layers.Push(new CellLayer(block));
+            var block = blockObject.GetComponent<BlockController>();
+            block.Setup(x, y);
 
             OnHoverEnter += block.HoverEnter;
             OnHoverExit += block.HoverExit;
         }
-
-        #region Métodos públicos e privados da lógica da classe
         public void SetHover(bool hover) {
             if (IsHovered == hover) { return; }
             IsHovered = hover;

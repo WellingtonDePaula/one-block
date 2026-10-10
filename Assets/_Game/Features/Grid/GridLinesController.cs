@@ -48,9 +48,6 @@ namespace OneBlock.Features {
             _material.SetFloat(FadeRadiusId, fadeCells * cellSize);
             _isReady = true;
         }
-        //public void SetGridOrigin(Vector3 origin) {
-        //    _material.SetVector(GridOriginId, (Vector2)origin);
-        //}
         #endregion
     }
 }

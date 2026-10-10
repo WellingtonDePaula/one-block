@@ -10,7 +10,6 @@ namespace OneBlock.Features.Grid {
         // Campos expostos no Inspector
         [SerializeField] private GridLinesController gridLinesController;
 
-
         // Campos privados para o estado interno da classe
         private int _width = 10;
         private int _height = 10;
@@ -21,7 +20,6 @@ namespace OneBlock.Features.Grid {
 
         #region Métodos do ciclo de vida da Unity (Awake, OnEnable, Start, OnDisable)
         private void Awake() {
-            transform.position = Vector3.zero;
         }
         private void Update() {
             HandleHoverCell();
@@ -30,14 +28,14 @@ namespace OneBlock.Features.Grid {
 
         #region Métodos públicos e privados da lógica da classe
         public void CreateGrid(GameObject blockPrefab) {
-            _grid = new GenericGrid<GridCell>(_width, _height, _cellSize, transform.position, (GenericGrid<GridCell> g, int x, int y) => {
-                GameObject blockObject = Instantiate(blockPrefab, this.transform);
-                blockObject.transform.localPosition = new Vector3(x, y) * g.CellSize;
+            Vector3 centeredOrigin = transform.position - new Vector3(_width, _height) * _cellSize * 0.5f;
 
-                var block = blockObject.GetComponent<BlockController>();
-                block.Setup(x, y);
-                return new GridCell(block);
+            _grid = new GenericGrid<GridCell>(_width, _height, _cellSize, transform.position, (GenericGrid<GridCell> g, int x, int y) => {
+                var cell = new GridCell();
+                cell.AddLayer(transform, blockPrefab, x, y, g.CellSize);
+                return cell;
             });
+
             gridLinesController.Setup(_grid.OriginPosition, _grid.CellSize);
         }
         private void HandleHoverCell() {

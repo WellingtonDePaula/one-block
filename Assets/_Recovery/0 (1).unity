@@ -159,7 +159,7 @@ Transform:
   m_GameObject: {fileID: 241128123}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0.07737, y: 1.02124, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -526,7 +526,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 797800fc17a14cc4cbe12ca7806ff740, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::OneBlock.Features.GridLinesController
-  fadeCells: 2
+  fadeCells: 5
 --- !u!212 &582644793
 SpriteRenderer:
   serializedVersion: 2
