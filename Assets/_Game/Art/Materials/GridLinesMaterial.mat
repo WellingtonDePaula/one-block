@@ -69,13 +69,13 @@ Material:
     - _CellSize: 1
     - _EnableExternalAlpha: 0
     - _FadeRadius: 2
-    - _LineWidth: 0.03
+    - _LineWidth: 0.025
     - _ZWrite: 0
     m_Colors:
     - White: {r: 1, g: 1, b: 1, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _GridOrigin: {r: 0, g: 0, b: 0, a: 0}
-    - _MouseWorld: {r: 0, g: 0, b: 0, a: 0}
+    - _MouseWorld: {r: -0.32, g: 1.1, b: 0, a: 0}
     - _RendererColor: {r: 1, g: 1, b: 1, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
