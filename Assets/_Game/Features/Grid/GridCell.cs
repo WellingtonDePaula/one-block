@@ -9,24 +9,27 @@ namespace OneBlock.Features.Grid {
 
         // Campos privados para o estado interno da classe
         private Stack<CellLayer> _layers;
+        private Vector2Int _gridPos;
 
         // Propriedades para acesso controlado externo
         public bool IsHovered { get; private set; } = false;
+        public Vector2Int GridPos => _gridPos;
         public event Action OnHoverEnter;
         public event Action OnHoverExit;
 
         // Construtores
-        public GridCell() {
+        public GridCell(Vector2Int gridPos) {
             _layers = new Stack<CellLayer>();
+            _gridPos = gridPos;
         }
 
         #region Métodos públicos e privados da lógica da classe
-        public void AddLayer(Transform parent, GameObject blockPrefab, int x, int y, float cellSize) {
+        public void AddLayer(Transform parent, GameObject blockPrefab, float cellSize) {
             GameObject blockObject = GameObject.Instantiate(blockPrefab, parent);
-            blockObject.transform.localPosition = new Vector3(x, y) * cellSize;
+            blockObject.transform.localPosition = (Vector2) _gridPos * cellSize;
 
             var block = blockObject.GetComponent<BlockController>();
-            block.Setup(x, y);
+            block.Setup(_gridPos.x, _gridPos.y);
 
             OnHoverEnter += block.HoverEnter;
             OnHoverExit += block.HoverExit;

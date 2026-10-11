@@ -1,5 +1,5 @@
-using OneBlock.Features.Blocks;
 using SoWell.Utils.Core;
+using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -9,6 +9,10 @@ namespace OneBlock.Features.Grid {
 
         // Campos expostos no Inspector
         [SerializeField] private GridLinesController gridLinesController;
+        [SerializeField] private SpriteRenderer hoverCellRenderer;
+
+        // Propriedades para acesso controlado externo
+        public event Action<GridCell> OnHoverCell;
 
         // Campos privados para o estado interno da classe
         private int _width = 10;
@@ -22,7 +26,13 @@ namespace OneBlock.Features.Grid {
         private void Awake() {
         }
         private void Update() {
-            HandleHoverCell();
+            UpdateHoverCell();
+        }
+        private void OnEnable() {
+            OnHoverCell += UpdateHoverRenderer;
+        }
+        private void OnDisable() {
+            OnHoverCell -= UpdateHoverRenderer;
         }
         #endregion
 
@@ -31,14 +41,14 @@ namespace OneBlock.Features.Grid {
             Vector3 centeredOrigin = transform.position - new Vector3(_width, _height) * _cellSize * 0.5f;
 
             _grid = new GenericGrid<GridCell>(_width, _height, _cellSize, transform.position, (GenericGrid<GridCell> g, int x, int y) => {
-                var cell = new GridCell();
-                cell.AddLayer(transform, blockPrefab, x, y, g.CellSize);
+                var cell = new GridCell(new Vector2Int(x, y));
+                //cell.AddLayer(transform, blockPrefab, g.CellSize);
                 return cell;
             });
 
             gridLinesController.Setup(_grid.OriginPosition, _grid.CellSize);
         }
-        private void HandleHoverCell() {
+        private void UpdateHoverCell() {
             if (Mouse.current == null) { return; }
             if (_grid == null) { return; }
 
@@ -53,7 +63,19 @@ namespace OneBlock.Features.Grid {
                 _hoverCell?.SetHover(false);
                 _hoverCell = newCell;
                 _hoverCell?.SetHover(true);
+                OnHoverCell?.Invoke(_hoverCell);
             }
+        }
+
+        private void UpdateHoverRenderer(GridCell cell) {
+            if (cell == null && hoverCellRenderer.enabled) {
+                hoverCellRenderer.enabled = false;
+                return;
+            }
+            hoverCellRenderer.enabled = true;
+            // Atualiza a posição do hoverCellRenderer para coincidir com a célula atual
+            hoverCellRenderer.transform.localPosition = new Vector2(cell.GridPos.x * _grid.CellSize + 0.5f, cell.GridPos.y * _grid.CellSize + 0.5f);
+            hoverCellRenderer.sortingOrder = -cell.GridPos.y;
         }
         #endregion
     }
