@@ -53,6 +53,7 @@ namespace OneBlock.Features.Grid {
             if (_grid == null) { return; }
 
             Vector2 worldPos = UtilsClass.GetMouseWorldPosition();
+
             Vector2 inversedPos = transform.InverseTransformPoint(worldPos);
 
             Vector2Int gridPos = _grid.GetGridPosition(inversedPos);
