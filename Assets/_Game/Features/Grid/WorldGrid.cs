@@ -1,3 +1,4 @@
+using OneBlock.Core.Input;
 using SoWell.Utils.Core;
 using System;
 using UnityEngine;
@@ -29,9 +30,13 @@ namespace OneBlock.Features.Grid {
             UpdateHoverCell();
         }
         private void OnEnable() {
+            SubscribeInputEvents();
+
             OnHoverCell += UpdateHoverRenderer;
         }
         private void OnDisable() {
+            UnsubscribeInputEvents();
+
             OnHoverCell -= UpdateHoverRenderer;
         }
         #endregion
@@ -77,6 +82,20 @@ namespace OneBlock.Features.Grid {
             // Atualiza a posição do hoverCellRenderer para coincidir com a célula atual
             hoverCellRenderer.transform.localPosition = new Vector2(cell.GridPos.x * _grid.CellSize + 0.5f, cell.GridPos.y * _grid.CellSize + 0.5f);
             hoverCellRenderer.sortingOrder = -cell.GridPos.y;
+        }
+
+        private void HandleOnGamepaySelectPerformed(InputAction.CallbackContext context) {
+            if (context.performed) {
+                Debug.Log("Gameplay action performed!");
+            }
+        }
+        private void SubscribeInputEvents() {
+            if (InputManager.Instance == null) { return; }
+            InputManager.Instance.InputActions.Gameplay.Select.performed += HandleOnGamepaySelectPerformed;
+        }
+        private void UnsubscribeInputEvents() {
+            if (InputManager.Instance == null) { return; }
+            InputManager.Instance.InputActions.Gameplay.Select.performed -= HandleOnGamepaySelectPerformed;
         }
         #endregion
     }

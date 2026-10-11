@@ -1,3 +1,4 @@
+using OneBlock.Core.Input;
 using OneBlock.Features.Grid;
 using UnityEngine;
 
@@ -18,6 +19,8 @@ namespace OneBlock.Core.Game {
 
         #region Métodos públicos e privados da lógica da classe
         public void CreateGrid() {
+            InputManager.Instance.SwitchToGameplay();
+
             worldGrid.CreateGrid(blockPrefab);
         }
         #endregion
