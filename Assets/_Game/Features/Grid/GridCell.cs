@@ -26,13 +26,20 @@ namespace OneBlock.Features.Grid {
         #region Métodos públicos e privados da lógica da classe
         public void AddLayer(Transform parent, GameObject blockPrefab, float cellSize) {
             GameObject blockObject = GameObject.Instantiate(blockPrefab, parent);
-            blockObject.transform.localPosition = (Vector2) _gridPos * cellSize;
+
+            var position = new Vector2(_gridPos.x * cellSize, _gridPos.y * cellSize + (_layers.Count * cellSize * 0.5f));
+
+            blockObject.transform.localPosition = position;
 
             var block = blockObject.GetComponent<BlockController>();
-            block.Setup(_gridPos.x, _gridPos.y);
+
+            block.Setup(_gridPos.x, _gridPos.y - _layers.Count);
 
             OnHoverEnter += block.HoverEnter;
             OnHoverExit += block.HoverExit;
+
+            CellLayer layer = new CellLayer(block);
+            _layers.Push(layer);
         }
         public void SetHover(bool hover) {
             if (IsHovered == hover) { return; }
@@ -43,6 +50,10 @@ namespace OneBlock.Features.Grid {
             } else {
                 OnHoverExit?.Invoke();
             }
+        }
+
+        public void Interact() {
+            throw new NotImplementedException();
         }
         #endregion
     }

@@ -90,9 +90,10 @@ namespace OneBlock.Features.Grid {
             hoverCellRenderer.sortingOrder = -cell.GridPos.y;
         }
         private void InteractWithCell(GridCell cell) {
-            Debug.Log(cell);
             if (cell == null) { return; }
-            Debug.Log("Interacted");
+
+            //cell.Interact();
+            
             cell.AddLayer(transform, _blockPrefab, _grid.CellSize);
         }
         private void HandleOnGamepaySelectPerformed(InputAction.CallbackContext context) {
@@ -100,12 +101,10 @@ namespace OneBlock.Features.Grid {
         }
         private void SubscribeInputEvents() {
             if (InputManager.Instance == null) { return; }
-            Debug.Log("Subscribed to input events");
             InputManager.Instance.InputActions.Gameplay.Select.performed += HandleOnGamepaySelectPerformed;
         }
         private void UnsubscribeInputEvents() {
             if (InputManager.Instance == null) { return; }
-            Debug.Log("Unsubscribed from input events");
             InputManager.Instance.InputActions.Gameplay.Select.performed -= HandleOnGamepaySelectPerformed;
         }
         #endregion
