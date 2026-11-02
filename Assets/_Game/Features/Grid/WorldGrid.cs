@@ -22,6 +22,8 @@ namespace OneBlock.Features.Grid {
         private GenericGrid<GridCell> _grid;
         private GridCell _hoverCell;
 
+        private GameObject _blockPrefab;
+
 
         #region Métodos do ciclo de vida da Unity (Awake, OnEnable, Start, OnDisable)
         private void Awake() {
@@ -43,11 +45,15 @@ namespace OneBlock.Features.Grid {
 
         #region Métodos públicos e privados da lógica da classe
         public void CreateGrid(GameObject blockPrefab) {
+            _blockPrefab = blockPrefab;
+
             Vector3 centeredOrigin = transform.position - new Vector3(_width, _height) * _cellSize * 0.5f;
 
             _grid = new GenericGrid<GridCell>(_width, _height, _cellSize, transform.position, (GenericGrid<GridCell> g, int x, int y) => {
                 var cell = new GridCell(new Vector2Int(x, y));
+
                 //cell.AddLayer(transform, blockPrefab, g.CellSize);
+
                 return cell;
             });
 
@@ -83,18 +89,23 @@ namespace OneBlock.Features.Grid {
             hoverCellRenderer.transform.localPosition = new Vector2(cell.GridPos.x * _grid.CellSize + 0.5f, cell.GridPos.y * _grid.CellSize + 0.5f);
             hoverCellRenderer.sortingOrder = -cell.GridPos.y;
         }
-
+        private void InteractWithCell(GridCell cell) {
+            Debug.Log(cell);
+            if (cell == null) { return; }
+            Debug.Log("Interacted");
+            cell.AddLayer(transform, _blockPrefab, _grid.CellSize);
+        }
         private void HandleOnGamepaySelectPerformed(InputAction.CallbackContext context) {
-            if (context.performed) {
-                Debug.Log("Gameplay action performed!");
-            }
+            InteractWithCell(_hoverCell);
         }
         private void SubscribeInputEvents() {
             if (InputManager.Instance == null) { return; }
+            Debug.Log("Subscribed to input events");
             InputManager.Instance.InputActions.Gameplay.Select.performed += HandleOnGamepaySelectPerformed;
         }
         private void UnsubscribeInputEvents() {
             if (InputManager.Instance == null) { return; }
+            Debug.Log("Unsubscribed from input events");
             InputManager.Instance.InputActions.Gameplay.Select.performed -= HandleOnGamepaySelectPerformed;
         }
         #endregion
