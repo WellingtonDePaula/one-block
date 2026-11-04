@@ -95,7 +95,7 @@ namespace OneBlock.Core.Input
             ""id"": ""c7456dc4-b92a-4e32-a2f0-978cba98bf78"",
             ""actions"": [
                 {
-                    ""name"": ""Select"",
+                    ""name"": ""Interact"",
                     ""type"": ""Button"",
                     ""id"": ""fc90efef-5c83-462f-a55b-601c842d7587"",
                     ""expectedControlType"": """",
@@ -112,7 +112,7 @@ namespace OneBlock.Core.Input
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Select"",
+                    ""action"": ""Interact"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -123,7 +123,7 @@ namespace OneBlock.Core.Input
 }");
             // Gameplay
             m_Gameplay = asset.FindActionMap("Gameplay", throwIfNotFound: true);
-            m_Gameplay_Select = m_Gameplay.FindAction("Select", throwIfNotFound: true);
+            m_Gameplay_Interact = m_Gameplay.FindAction("Interact", throwIfNotFound: true);
         }
 
         ~@PlayerControls()
@@ -204,7 +204,7 @@ namespace OneBlock.Core.Input
         // Gameplay
         private readonly InputActionMap m_Gameplay;
         private List<IGameplayActions> m_GameplayActionsCallbackInterfaces = new List<IGameplayActions>();
-        private readonly InputAction m_Gameplay_Select;
+        private readonly InputAction m_Gameplay_Interact;
         /// <summary>
         /// Provides access to input actions defined in input action map "Gameplay".
         /// </summary>
@@ -217,9 +217,9 @@ namespace OneBlock.Core.Input
             /// </summary>
             public GameplayActions(@PlayerControls wrapper) { m_Wrapper = wrapper; }
             /// <summary>
-            /// Provides access to the underlying input action "Gameplay/Select".
+            /// Provides access to the underlying input action "Gameplay/Interact".
             /// </summary>
-            public InputAction @Select => m_Wrapper.m_Gameplay_Select;
+            public InputAction @Interact => m_Wrapper.m_Gameplay_Interact;
             /// <summary>
             /// Provides access to the underlying input action map instance.
             /// </summary>
@@ -246,9 +246,9 @@ namespace OneBlock.Core.Input
             {
                 if (instance == null || m_Wrapper.m_GameplayActionsCallbackInterfaces.Contains(instance)) return;
                 m_Wrapper.m_GameplayActionsCallbackInterfaces.Add(instance);
-                @Select.started += instance.OnSelect;
-                @Select.performed += instance.OnSelect;
-                @Select.canceled += instance.OnSelect;
+                @Interact.started += instance.OnInteract;
+                @Interact.performed += instance.OnInteract;
+                @Interact.canceled += instance.OnInteract;
             }
 
             /// <summary>
@@ -260,9 +260,9 @@ namespace OneBlock.Core.Input
             /// <seealso cref="GameplayActions" />
             private void UnregisterCallbacks(IGameplayActions instance)
             {
-                @Select.started -= instance.OnSelect;
-                @Select.performed -= instance.OnSelect;
-                @Select.canceled -= instance.OnSelect;
+                @Interact.started -= instance.OnInteract;
+                @Interact.performed -= instance.OnInteract;
+                @Interact.canceled -= instance.OnInteract;
             }
 
             /// <summary>
@@ -304,12 +304,12 @@ namespace OneBlock.Core.Input
         public interface IGameplayActions
         {
             /// <summary>
-            /// Method invoked when associated input action "Select" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+            /// Method invoked when associated input action "Interact" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
             /// </summary>
             /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
             /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
             /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
-            void OnSelect(InputAction.CallbackContext context);
+            void OnInteract(InputAction.CallbackContext context);
         }
     }
 }

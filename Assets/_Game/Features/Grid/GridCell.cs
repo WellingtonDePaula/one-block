@@ -33,9 +33,6 @@ namespace OneBlock.Features.Grid {
 
             var block = blockObject.GetComponent<BlockController>();
 
-            OnHoverEnter += block.HoverEnter;
-            OnHoverExit += block.HoverExit;
-
             CellLayer layer = new CellLayer(block);
             _layers.Push(layer);
         }

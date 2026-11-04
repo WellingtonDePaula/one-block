@@ -101,11 +101,11 @@ namespace OneBlock.Features.Grid {
         }
         private void SubscribeInputEvents() {
             if (InputManager.Instance == null) { return; }
-            InputManager.Instance.InputActions.Gameplay.Select.performed += HandleOnGamepaySelectPerformed;
+            InputManager.Instance.InputActions.Gameplay.Interact.performed += HandleOnGamepaySelectPerformed;
         }
         private void UnsubscribeInputEvents() {
             if (InputManager.Instance == null) { return; }
-            InputManager.Instance.InputActions.Gameplay.Select.performed -= HandleOnGamepaySelectPerformed;
+            InputManager.Instance.InputActions.Gameplay.Interact.performed -= HandleOnGamepaySelectPerformed;
         }
         #endregion
     }

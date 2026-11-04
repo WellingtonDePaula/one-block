@@ -1,3 +1,4 @@
+using OneBlock.Core.Input;
 using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -33,19 +34,39 @@ namespace OneBlock.Features.Blocks {
 
             // Bateu em algo
             if (hit.collider != null) {
-                if (hit.collider.gameObject.Equals(this.gameObject)) {
-                    Debug.Log("Bateu Aqui");
+                if (hit.collider.gameObject.Equals(this.gameObject) != _isHovered) {
+                    _isHovered = true;
+                    OnHoverChanged?.Invoke(true);
                 }
+            } else if(_isHovered != false) {
+                _isHovered = false;
+                OnHoverChanged?.Invoke(false);
             }
+        }
+        private void OnEnable() {
+            InputManager.Instance.InputActions.Gameplay.Interact.performed += HandleOnGameplayInteractPerformed;
+
+            OnHoverChanged += HandleOnHoverChanged;
+        }
+        private void OnDisable() {
+            InputManager.Instance.InputActions.Gameplay.Interact.performed -= HandleOnGameplayInteractPerformed;
+
+            OnHoverChanged -= HandleOnHoverChanged;
         }
         #endregion
 
         #region Métodos públicos e privados da lógica da classe
-        public void HoverEnter() {
-            _spriteRenderer.color = Color.yellow;
+        private void HandleOnHoverChanged(bool hover) {
+            if(hover) {
+                _spriteRenderer.color = Color.yellow;
+            } else {
+                _spriteRenderer.color = _originalColor;
+            }
         }
-        public void HoverExit() {
-            _spriteRenderer.color = _originalColor;
+        private void HandleOnGameplayInteractPerformed(InputAction.CallbackContext context) {
+            if(!_isHovered) { return; }
+
+            Clicked?.Invoke();
         }
         #endregion
     }
