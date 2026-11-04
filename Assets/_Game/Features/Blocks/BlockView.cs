@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -6,25 +7,28 @@ namespace OneBlock.Features.Blocks {
         // Campos estáticos e constantes
 
         // Campos expostos no Inspector
-        [SerializeField] private SpriteRenderer spriteRenderer;
+        [SerializeField] private SpriteRenderer _spriteRenderer;
 
         // Propriedades para acesso controlado externo
+        public event Action<bool> OnHoverChanged;
+        public event Action Clicked;
 
         // Campos privados para o estado interno da classe
-        private Camera mainCamera;
+        private Camera _mainCamera;
         private Color _originalColor;
+        private bool _isHovered;
 
 
         #region Métodos do ciclo de vida da Unity (Awake, OnEnable, Start, OnDisable)
         private void Awake() {
-            _originalColor = spriteRenderer.color;
+            _originalColor = _spriteRenderer.color;
 
-            mainCamera = Camera.main;
+            _mainCamera = Camera.main;
         }
         private void Update() {
             Vector2 mousePos = Mouse.current.position.ReadValue();
 
-            Ray ray = mainCamera.ScreenPointToRay(mousePos);
+            Ray ray = _mainCamera.ScreenPointToRay(mousePos);
             RaycastHit2D hit = Physics2D.GetRayIntersection(ray);
 
             // Bateu em algo
@@ -38,10 +42,10 @@ namespace OneBlock.Features.Blocks {
 
         #region Métodos públicos e privados da lógica da classe
         public void HoverEnter() {
-            spriteRenderer.color = Color.yellow;
+            _spriteRenderer.color = Color.yellow;
         }
         public void HoverExit() {
-            spriteRenderer.color = _originalColor;
+            _spriteRenderer.color = _originalColor;
         }
         #endregion
     }
