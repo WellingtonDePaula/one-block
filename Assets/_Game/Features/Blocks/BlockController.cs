@@ -10,7 +10,6 @@ namespace OneBlock.Features.Blocks {
 
         // Campos privados para o estado interno da classe
         private Color _originalColor;
-        private Vector2 _gridPos;
 
         #region Métodos do ciclo de vida da Unity
         private void Awake() {
@@ -19,16 +18,14 @@ namespace OneBlock.Features.Blocks {
         #endregion
 
         #region Métodos públicos e privados da lógica da classe
-        public void Setup(int x, int y) {
-            _gridPos = new Vector2(x, y);
-
-            spriteRenderer.sortingOrder = -y;
-        }
         public void HoverEnter() {
             spriteRenderer.color = Color.yellow;
         }
         public void HoverExit() {
             spriteRenderer.color = _originalColor;
+        }
+        public void Interact() {
+
         }
         #endregion
     }
