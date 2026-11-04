@@ -1,19 +1,19 @@
 using System;
 using UnityEngine;
 
-public class BlockModel
-{
-    // Campos estáticos e constantes
+namespace OneBlock.Features.Blocks {
+    public class BlockModel {
+        // Campos estáticos e constantes
 
-    // Campos privados para o estado interno da classe
+        // Campos privados para o estado interno da classe
 
-    // Propriedades para acesso controlado externo
+        // Propriedades para acesso controlado externo
 
-    // Construtores
-    public BlockModel()
-    {
+        // Construtores
+        public BlockModel() {
+        }
+
+        #region Métodos públicos e privados da lógica da classe
+        #endregion
     }
-
-    #region Métodos públicos e privados da lógica da classe
-    #endregion
 }
