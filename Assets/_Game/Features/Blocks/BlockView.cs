@@ -110,9 +110,9 @@ namespace OneBlock.Features.Blocks {
             _hitSequence.OnComplete(ResetTransform);
         }
         private void ResetTransform() {
-            transform.position = _originalPosition;
+            transform.localPosition = _originalPosition;
             transform.localScale = _originalScale;
-            transform.rotation = _originalRotation;
+            transform.localRotation = _originalRotation;
         }
         private void HandleOnGameplayInteractPerformed(InputAction.CallbackContext context) {
             if (!_isHovered) { return; }
