@@ -1,3 +1,4 @@
+using DG.Tweening;
 using OneBlock.Core.Input;
 using System;
 using UnityEngine;
@@ -8,21 +9,40 @@ namespace OneBlock.Features.Blocks {
         // Campos estáticos e constantes
 
         // Campos expostos no Inspector
-        [SerializeField] private SpriteRenderer _spriteRenderer;
+        [SerializeField] private SpriteRenderer spriteRenderer;
+
+        [Header("Shake")]
+        [SerializeField] private float duration = 0.25f;
+        [SerializeField] private Vector3 positionStrength = new Vector3(0.15f, 0.15f, 0f);
+        [SerializeField] private float rotationStrength = 8f;
+        [SerializeField] private int vibrato = 20;
+
+
+        [Header("Impacto")]
+        [SerializeField] private Vector3 squashAmount = new Vector3(-0.1f, -0.1f, 0f);
 
         // Propriedades para acesso controlado externo
         public event Action<bool> OnHoverChanged;
-        public event Action Clicked;
+        public event Action OnClick;
 
         // Campos privados para o estado interno da classe
         private Camera _mainCamera;
-        private Color _originalColor;
         private bool _isHovered;
+
+        private Color _originalColor;
+        private Vector3 _originalPosition;
+        private Vector3 _originalScale;
+        private Quaternion _originalRotation;
+
+        private Sequence _hitSequence;
 
 
         #region Métodos do ciclo de vida da Unity (Awake, OnEnable, Start, OnDisable)
         private void Awake() {
-            _originalColor = _spriteRenderer.color;
+            _originalColor = spriteRenderer.color;
+            _originalPosition = transform.position;
+            _originalScale = transform.localScale;
+            _originalRotation = transform.rotation;
 
             _mainCamera = Camera.main;
         }
@@ -38,7 +58,7 @@ namespace OneBlock.Features.Blocks {
                     _isHovered = true;
                     OnHoverChanged?.Invoke(true);
                 }
-            } else if(_isHovered != false) {
+            } else if (_isHovered != false) {
                 _isHovered = false;
                 OnHoverChanged?.Invoke(false);
             }
@@ -47,26 +67,48 @@ namespace OneBlock.Features.Blocks {
             InputManager.Instance.InputActions.Gameplay.Interact.performed += HandleOnGameplayInteractPerformed;
 
             OnHoverChanged += HandleOnHoverChanged;
+            OnClick += HandleOnClick;
         }
         private void OnDisable() {
             InputManager.Instance.InputActions.Gameplay.Interact.performed -= HandleOnGameplayInteractPerformed;
 
             OnHoverChanged -= HandleOnHoverChanged;
+            OnClick -= HandleOnClick;
+        }
+        private void OnDestroy() {
+            _hitSequence?.Kill();
         }
         #endregion
 
         #region Métodos públicos e privados da lógica da classe
         private void HandleOnHoverChanged(bool hover) {
-            if(hover) {
-                _spriteRenderer.color = Color.yellow;
-            } else {
-                _spriteRenderer.color = _originalColor;
-            }
+        }
+        private void HandleOnClick() {
+            _hitSequence?.Kill();
+            ResetTransform();
+
+            _hitSequence = DOTween.Sequence().SetLink(gameObject);
+
+            _hitSequence.Join(transform.DOShakePosition(
+                duration, positionStrength, vibrato, 90f, false, true));
+
+            _hitSequence.Join(transform.DOShakeRotation(
+                duration, new Vector3(0f, 0f, rotationStrength), vibrato, 90f, true));
+
+            _hitSequence.Join(transform.DOPunchScale(
+                squashAmount, duration, 8, 0.5f));
+
+            _hitSequence.OnComplete(ResetTransform);
+        }
+        private void ResetTransform() {
+            transform.position = _originalPosition;
+            transform.localScale = _originalScale;
+            transform.rotation = _originalRotation;
         }
         private void HandleOnGameplayInteractPerformed(InputAction.CallbackContext context) {
-            if(!_isHovered) { return; }
+            if (!_isHovered) { return; }
 
-            Clicked?.Invoke();
+            OnClick?.Invoke();
         }
         #endregion
     }

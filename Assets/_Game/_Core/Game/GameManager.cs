@@ -1,5 +1,4 @@
 using OneBlock.Core.Input;
-using OneBlock.Features.Grid;
 using UnityEngine;
 
 namespace OneBlock.Core.Game {
@@ -13,6 +12,9 @@ namespace OneBlock.Core.Game {
         // Campos privados para o estado interno da classe
 
         #region Métodos do ciclo de vida da Unity (Awake, OnEnable, Start, OnDisable)
+        private void Awake() {
+            InputManager.Instance.SwitchToGameplay();
+        }
         #endregion
 
         #region Métodos públicos e privados da lógica da classe
