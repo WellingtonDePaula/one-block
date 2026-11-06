@@ -775,10 +775,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::OneBlock.Features.Blocks.BlockView
   spriteRenderer: {fileID: 1987185597}
   duration: 0.25
-  positionStrength: {x: 0.15, y: 0.15, z: 0}
-  rotationStrength: 8
-  vibrato: 20
-  squashAmount: {x: -0.1, y: -0.1, z: 0}
+  positionStrength: {x: 0.09, y: 0, z: 0}
+  rotationStrength: 6
+  vibrato: 17
+  strechAmount: {x: 0.27, y: 0.27, z: 0}
+  squashAmount: {x: -0.3, y: -0.3, z: 0}
 --- !u!95 &1987185600
 Animator:
   serializedVersion: 7

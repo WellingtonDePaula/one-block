@@ -19,6 +19,7 @@ namespace OneBlock.Features.Blocks {
 
 
         [Header("Impacto")]
+        [SerializeField] private Vector3 strechAmount = new Vector3(-0.1f, -0.1f, 0f);
         [SerializeField] private Vector3 squashAmount = new Vector3(-0.1f, -0.1f, 0f);
 
         // Propriedades para acesso controlado externo
@@ -95,8 +96,16 @@ namespace OneBlock.Features.Blocks {
             _hitSequence.Join(transform.DOShakeRotation(
                 duration, new Vector3(0f, 0f, rotationStrength), vibrato, 90f, true));
 
+            float strechDuration, squashDuration;
+
+            strechDuration = duration * 0.7f;
+            squashDuration = duration * 0.3f;
+
             _hitSequence.Join(transform.DOPunchScale(
-                squashAmount, duration, 8, 0.5f));
+                strechAmount, strechDuration, 8, 0.5f));
+
+            _hitSequence.Join(transform.DOPunchScale(
+                squashAmount, squashDuration, 8, 0.5f));
 
             _hitSequence.OnComplete(ResetTransform);
         }
