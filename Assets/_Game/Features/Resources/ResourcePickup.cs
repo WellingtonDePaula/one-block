@@ -2,51 +2,82 @@ using UnityEngine;
 
 namespace OneBlock.Features.Resources {
     public class ResourcePickup : MonoBehaviour {
-        private enum Phase { Waiting, Rising, Falling, Done }
+        private enum Phase { Waiting, Rising, Falling, Landing, Limbo }
+
+        [Header("Aterrissagem")]
+        [SerializeField] private float _landingLerpSpeed = 6f;
+        [SerializeField] private float _stopThreshold = 0.05f;
+        [SerializeField] private float _squashAmount = 0.15f;
+        [SerializeField] private float _squashRecoverSpeed = 8f;
+
+        [Header("Limbo")]
+        [SerializeField] private float _limboShrinkSpeed = 2f;
 
         private Phase _phase = Phase.Waiting;
         private bool _active = false;
-        private float _riseTime = 0f;   // quanto tempo ficou subindo
-        private float _fallTimer = 0f;  // contagem regressiva depois do ápice
+        private bool _isGround = false;
+        private float _riseTime = 0f;
+        private float _fallTimer = 0f;
         private Vector2 _originalDirection;
+        private Vector3 _baseScale;
         private Rigidbody2D _body;
 
         private void Awake() {
             _body = GetComponent<Rigidbody2D>();
+            _baseScale = transform.localScale;
         }
 
         private void FixedUpdate() {
             if (!_active) { return; }
 
-            float vy = _body.linearVelocity.y;
-
             switch (_phase) {
                 case Phase.Waiting:
-                    if (vy > 0f) {
+                    if (_body.linearVelocity.y > 0f) {
                         _phase = Phase.Rising;
                         _riseTime = Time.fixedDeltaTime;
                     }
                     break;
 
                 case Phase.Rising:
-                    if (vy > 0f) {
+                    if (_body.linearVelocity.y > 0f) {
                         _riseTime += Time.fixedDeltaTime;
                     } else {
-                        _fallTimer = (_riseTime * Mathf.Abs(_originalDirection.x));
+                        _fallTimer = _riseTime * Mathf.Abs(_originalDirection.x);
                         _phase = Phase.Falling;
                     }
                     break;
 
                 case Phase.Falling:
                     _fallTimer -= Time.fixedDeltaTime;
-                    if (_fallTimer <= 0f) {
-                        _body.gravityScale = 0f;
-                        _body.linearVelocity = new Vector2(_originalDirection.x, _originalDirection.y * 0.5f);
-                        //_body.linearVelocity = _originalDirection;
-                        _body.linearDamping = 6f;
-                        _phase = Phase.Done;
+                    if (_fallTimer <= 0f) { EndFlight(); }
+                    break;
+
+                case Phase.Landing:
+                    _body.linearVelocity = Vector2.Lerp(
+                        _body.linearVelocity, Vector2.zero,
+                        _landingLerpSpeed * Time.fixedDeltaTime);
+
+                    if (_body.linearVelocity.sqrMagnitude <= _stopThreshold * _stopThreshold) {
+                        _body.linearVelocity = Vector2.zero;
+                        _active = false;
                     }
                     break;
+            }
+        }
+
+        private void Update() {
+            if (!_active) { return; }
+
+            if (_phase == Phase.Landing) {
+                transform.localScale = Vector3.Lerp(
+                    transform.localScale, _baseScale,
+                    _squashRecoverSpeed * Time.deltaTime);
+            } else if (_phase == Phase.Limbo) {
+                transform.localScale -= _baseScale * (_limboShrinkSpeed * Time.deltaTime);
+
+                if (transform.localScale.x <= 0f) {
+                    Destroy(gameObject);
+                }
             }
         }
 
@@ -56,6 +87,25 @@ namespace OneBlock.Features.Resources {
             _fallTimer = 0f;
             _phase = Phase.Waiting;
             _active = true;
+        }
+
+        public void SetGround(bool isGround) {
+            _isGround = isGround;
+        }
+
+        private void EndFlight() {
+            _body.gravityScale = 0f;
+
+            if (_isGround) {
+                transform.localScale = new Vector3(
+                    _baseScale.x * (1f + _squashAmount),
+                    _baseScale.y * (1f - _squashAmount),
+                    _baseScale.z);
+                _phase = Phase.Landing;
+            } else {
+                _body.linearVelocity = Vector2.zero;
+                _phase = Phase.Limbo;
+            }
         }
     }
 }
