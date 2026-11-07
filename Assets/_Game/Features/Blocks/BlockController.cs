@@ -9,6 +9,7 @@ namespace OneBlock.Features.Blocks {
         // Campos expostos no Inspector
         [SerializeField] private Rigidbody2D resourcePrefab;
         [SerializeField] private float force;
+        [SerializeField] private ResourceDatabase resources;
 
         // Propriedades para acesso controlado externo
 

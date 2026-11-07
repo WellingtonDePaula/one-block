@@ -17,6 +17,14 @@ namespace OneBlock.Features.Resources {
         #endregion
 
         #region Métodos públicos e privados da lógica da classe
+        public ResourceData GetRandom() {
+            if (Resources.Count == 0) {
+                Debug.LogWarning("ResourceDatabase is empty.");
+                return null;
+            }
+            int randomIndex = Random.Range(0, Resources.Count);
+            return Resources[randomIndex];
+        }
         #endregion
     }
 }
