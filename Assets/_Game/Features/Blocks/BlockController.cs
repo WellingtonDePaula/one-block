@@ -1,3 +1,4 @@
+using OneBlock.Features.Resources;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -34,6 +35,8 @@ namespace OneBlock.Features.Blocks {
             resourceBody.gravityScale = 0.7f/direction.y;
 
             resourceBody.AddForce(direction*force, ForceMode2D.Impulse);
+
+            resourceBody.GetComponent<ResourcePickup>().Setup(direction);
         }
         #endregion
     }
