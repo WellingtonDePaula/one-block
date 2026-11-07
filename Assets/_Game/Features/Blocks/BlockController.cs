@@ -37,8 +37,10 @@ namespace OneBlock.Features.Blocks {
 
             resourceBody.AddForce(direction*force, ForceMode2D.Impulse);
 
+            var resource = resources.GetRandom();
+
             resourceBody.GetComponent<ResourcePickup>().SetGround(true);
-            resourceBody.GetComponent<ResourcePickup>().Setup(direction);
+            resourceBody.GetComponent<ResourcePickup>().Setup(direction, resource);
         }
         #endregion
     }

@@ -22,9 +22,12 @@ namespace OneBlock.Features.Resources {
         private Vector2 _originalDirection;
         private Vector3 _baseScale;
         private Rigidbody2D _body;
+        private ResourceData _resource;
+        private SpriteRenderer _renderer;
 
         private void Awake() {
             _body = GetComponent<Rigidbody2D>();
+            _renderer = GetComponent<SpriteRenderer>();
             _baseScale = transform.localScale;
         }
 
@@ -82,12 +85,14 @@ namespace OneBlock.Features.Resources {
             }
         }
 
-        public void Setup(Vector2 originalDirection) {
+        public void Setup(Vector2 originalDirection, ResourceData resource) {
+            _resource = resource;
             _originalDirection = originalDirection;
             _riseTime = 0f;
             _fallTimer = 0f;
             _phase = Phase.Waiting;
             _active = true;
+            _renderer.sprite = _resource.Icon;
         }
 
         public void SetGround(bool isGround) {

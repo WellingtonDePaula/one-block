@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: VoidResourceData
   m_EditorClassIdentifier: Assembly-CSharp::OneBlock.Features.Resources.ResourceData
   Name: Void Shard
-  Icon: {fileID: 21300000, guid: 528a130a47a1d4af28e1ef4c8b3c5386, type: 3}
+  Icon: {fileID: 3081984584779569212, guid: b58998abb2f3b1943973431d782efb79, type: 3}

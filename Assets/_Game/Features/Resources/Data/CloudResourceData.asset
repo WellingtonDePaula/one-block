@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: CloudResourceData
   m_EditorClassIdentifier: Assembly-CSharp::OneBlock.Features.Resources.ResourceData
   Name: Cloud Piece
-  Icon: {fileID: 21300000, guid: 5d52b20f865aff242bfcb08c3b6f61a5, type: 3}
+  Icon: {fileID: -2616558505299899309, guid: 5668a9f077a2d194dafaf0a1291d7968, type: 3}
