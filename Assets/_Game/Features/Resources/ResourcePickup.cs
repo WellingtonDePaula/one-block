@@ -58,7 +58,6 @@ namespace OneBlock.Features.Resources {
                         _landingLerpSpeed * Time.fixedDeltaTime);
 
                     if (_body.linearVelocity.sqrMagnitude <= _stopThreshold * _stopThreshold) {
-                        _body.linearVelocity = Vector2.zero;
                         _active = false;
                     }
                     break;
@@ -94,7 +93,7 @@ namespace OneBlock.Features.Resources {
         }
 
         private void EndFlight() {
-            _body.gravityScale = 0f;
+            _body.gravityScale = Mathf.Abs(_originalDirection.y);
 
             if (_isGround) {
                 transform.localScale = new Vector3(
@@ -103,7 +102,6 @@ namespace OneBlock.Features.Resources {
                     _baseScale.z);
                 _phase = Phase.Landing;
             } else {
-                _body.linearVelocity = Vector2.zero;
                 _phase = Phase.Limbo;
             }
         }

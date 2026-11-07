@@ -132,3 +132,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 43908d399981db341b6a8c8dce94bd5d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::OneBlock.Features.Resources.ResourcePickup
+  _landingLerpSpeed: 6
+  _stopThreshold: 0.05
+  _squashAmount: 0.15
+  _squashRecoverSpeed: 8
+  _limboShrinkSpeed: 2
