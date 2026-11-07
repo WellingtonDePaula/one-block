@@ -32,11 +32,11 @@ namespace OneBlock.Features.Blocks {
             Rigidbody2D resourceBody = Instantiate(resourcePrefab, transform.position, transform.rotation);
 
             Vector2 direction = new Vector2(Random.Range(-1f, 1f), Random.Range(0.7f, 1f)).normalized;
-            resourceBody.gravityScale = 1;
+            resourceBody.gravityScale = 1f;
 
             resourceBody.AddForce(direction*force, ForceMode2D.Impulse);
 
-            resourceBody.GetComponent<ResourcePickup>().SetGround(false);
+            resourceBody.GetComponent<ResourcePickup>().SetGround(true);
             resourceBody.GetComponent<ResourcePickup>().Setup(direction);
         }
         #endregion

@@ -1,7 +1,8 @@
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 namespace OneBlock.Features.Resources {
-    public class ResourcePickup : MonoBehaviour {
+    public class ResourcePickup : MonoBehaviour, IPointerDownHandler {
         private enum Phase { Waiting, Rising, Falling, Landing, Limbo }
 
         [Header("Aterrissagem")]
@@ -58,6 +59,7 @@ namespace OneBlock.Features.Resources {
                         _landingLerpSpeed * Time.fixedDeltaTime);
 
                     if (_body.linearVelocity.sqrMagnitude <= _stopThreshold * _stopThreshold) {
+                        _body.linearVelocity = Vector2.zero;
                         _active = false;
                     }
                     break;
@@ -93,17 +95,30 @@ namespace OneBlock.Features.Resources {
         }
 
         private void EndFlight() {
-            _body.gravityScale = Mathf.Abs(_originalDirection.y);
+            _body.gravityScale = 0f;
 
             if (_isGround) {
+                // Aterrissou: squash de impacto e desliza até parar
                 transform.localScale = new Vector3(
                     _baseScale.x * (1f + _squashAmount),
                     _baseScale.y * (1f - _squashAmount),
                     _baseScale.z);
                 _phase = Phase.Landing;
             } else {
+                // Sem chão: cai no limbo
+                _body.linearVelocity = Vector2.zero;
                 _phase = Phase.Limbo;
             }
+        }
+        private void Pickup() {
+            if(_phase == Phase.Limbo) { return; }
+
+            Destroy(gameObject);
+            Debug.Log("Coletado");
+        }
+
+        public void OnPointerDown(PointerEventData eventData) {
+            Pickup();
         }
     }
 }
