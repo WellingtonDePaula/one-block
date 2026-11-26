@@ -19,6 +19,15 @@ namespace OneBlock.Features.Inventory {
         }
 
         #region Métodos públicos e privados da lógica da classe
+        public bool CheckData(ResourceData resourceData) {
+            return _resourceData == resourceData;
+        }
+        public void AddAmount(ResourceData data, int amount) {
+            if (_resourceData != data) {
+                throw new ArgumentException("Resource data does not match the slot's resource data.");
+            }
+            _amount += amount;
+        }
         #endregion
     }
 }
