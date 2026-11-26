@@ -116,7 +116,7 @@ namespace OneBlock.Features.Resources {
             }
         }
         private void Pickup() {
-            if(_phase == Phase.Limbo) { return; }
+            if(_phase == Phase.Limbo || _phase == Phase.Waiting) { return; }
 
             Destroy(gameObject);
             Debug.Log("Coletado");
