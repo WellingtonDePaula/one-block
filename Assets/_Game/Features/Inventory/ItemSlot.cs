@@ -7,13 +7,15 @@ namespace OneBlock.Features.Inventory {
         // Campos estáticos e constantes
 
         // Campos privados para o estado interno da classe
-        private ResourceData resourceData;
+        private ResourceData _resourceData;
         private int _amount;
 
         // Propriedades para acesso controlado externo
 
         // Construtores
-        public ItemSlot() {
+        public ItemSlot(ResourceData resourceData, int amount) {
+            _resourceData = resourceData;
+            _amount = amount;
         }
 
         #region Métodos públicos e privados da lógica da classe
