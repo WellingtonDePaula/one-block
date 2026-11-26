@@ -1,8 +1,11 @@
+using OneBlock.Features.Inventory;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
 namespace OneBlock.Features.Resources {
     public class ResourcePickup : MonoBehaviour, IPointerDownHandler {
+        [Header("Controladores")]
+        [SerializeField] private InventoryController inventory;
         private enum Phase { Waiting, Rising, Falling, Landing, Limbo }
 
         [Header("Aterrissagem")]
@@ -119,7 +122,7 @@ namespace OneBlock.Features.Resources {
             if(_phase == Phase.Limbo || _phase == Phase.Waiting) { return; }
 
             Destroy(gameObject);
-            Debug.Log("Coletado");
+            inventory.AddItem(_resource, 1);
         }
 
         public void OnPointerDown(PointerEventData eventData) {
